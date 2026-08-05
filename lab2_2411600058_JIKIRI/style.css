@@ -52,5 +52,60 @@ nav a:hover{
 main{
     background-color: wheat;
     padding: 30px;
-    
+    border-radius:0 0 10px 10px;
+    margin: 20px;
+}
+
+section  {
+    background-color: #f0f9fa;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+    border-left: 5px solid #d4e6f1;
+    padding-bottom: 10px;
+}
+
+section h2{
+    color: #1a5276;
+    margin-bottom: 2px;
+    border-bottom: 2px solid #d4e6f1;
+    padding-bottom: 10px;
+}
+
+/*Aside Styles*/
+aside {
+    background-color: #d4e6f1;
+}
+
+aside h3 {
+    background-color: #d4e6f1;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    border: 2px solid #2980b9;
+}
+
+aside h3 {
+    color: #1a5276;
+    margin-bottom: 10px;
+}
+
+footer {
+    background-color: #1a5276;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 0.9em;
+}
+
+/* List Styles */
+ul{
+    list-style-type: square;
+    padding-left: 25px;
+}
+
+ul li{
+    margin: 8px 0;
+    color: #2c3e50;
 }
