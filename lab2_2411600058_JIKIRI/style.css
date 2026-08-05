@@ -109,3 +109,36 @@ ul li{
     margin: 8px 0;
     color: #2c3e50;
 }
+
+.highlight {
+    background-color: #e67e22;
+    font-weight: bold;
+}
+
+.project-item {
+    background-color: #f0f9fa;
+    padding: 15px;
+    margin-bottom: 10px 0;
+    border-radius: 5px;
+    border-left: 1px solid #d4e6f1;
+}
+
+.project-item h3 {
+    color: #1a5276;
+}
+
+.button {
+    display: inline-block;
+    background-color: #e67e22;
+    color: white;
+    padding: 0px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #d35400;
+}
+    
