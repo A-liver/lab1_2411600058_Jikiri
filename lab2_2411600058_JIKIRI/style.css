@@ -129,8 +129,8 @@ ul li{
 
 .button {
     display: inline-block;
-    background-color: #e67e22;
-    color: white;
+    background-color: #44A1A4;
+    color: wheat;
     padding: 0px 20px;
     text-decoration: none;
     border-radius: 5px;
@@ -139,6 +139,16 @@ ul li{
 }
 
 .button:hover {
-    background-color: #d35400;
+    background-color: #325E6A;
 }
     
+/* Color Scheme that I used https://colorhunt.co/palette/224248325e6a44a1a4ff9a00
+
+Color Name | Hex Code | Usage
+Primary    |  #224248 | Background
+Secondary  |  #325E6A | Text
+Background |  #44A1A4 | Buttons
+Accent     |  #FF9A00 | Highlights
+Light      |  #F0F9FA | Section Background
+Accent
+*/
