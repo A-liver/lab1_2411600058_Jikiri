@@ -6,15 +6,15 @@
 
 body { 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f3f5;
-    color: #2c3e50;
+    background-color: #224248;
+    color: #325E6A;
     line-height: 1.6;
     padding: 20px;
 }
 
 /*Header Styles*/
 header {
-  background-color: #1a5276 ;
+  background-color: #44A1A4;
   color: white;
   padding: 30px 20px;
   text-align: center;
@@ -27,7 +27,7 @@ header h1{
 }
 
 nav{
-    background-color: #2980b9;
+    background-color: #325E6A;
     padding: 15px 20px;
     display: flex;
     justify-content: center;
@@ -45,7 +45,7 @@ nav a{
 }
 
 nav a:hover{
-    background-color: #1a5276;
+    background-color: #44A1A4;
     color: whitesmoke;
 }
 
@@ -74,7 +74,7 @@ section h2{
 
 /*Aside Styles*/
 aside {
-    background-color: #d4e6f1;
+    background-color: #224248;
 }
 
 aside h3 {
@@ -82,7 +82,7 @@ aside h3 {
     padding: 25px;
     border-radius: 8px;
     margin-bottom: 25px;
-    border: 2px solid #2980b9;
+    border: 2px solid wheat;
 }
 
 aside h3 {
@@ -91,7 +91,7 @@ aside h3 {
 }
 
 footer {
-    background-color: #1a5276;
+    background-color: #44A1A4;
     color: white;
     text-align: center;
     padding: 20px;
