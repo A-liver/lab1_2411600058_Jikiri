@@ -7,7 +7,7 @@
 body { 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #224248;
-    color: #325E6A;
+    color: #F0F9FA;
     line-height: 1.6;
     padding: 20px;
 }
@@ -36,7 +36,7 @@ nav{
 }
 
 nav a{
-    color: wheat;
+    color: #F0F9FA;
     text-decoration: none;
     font-weight: bold;
     padding: 8px 15px;
@@ -46,11 +46,11 @@ nav a{
 
 nav a:hover{
     background-color: #44A1A4;
-    color: whitesmoke;
+    color: #224248;
 }
 
 main{
-    background-color: wheat;
+    background-color: #f0f9fa;
     padding: 30px;
     border-radius:0 0 10px 10px;
     margin: 20px;
@@ -61,17 +61,19 @@ section  {
     padding: 25px;
     margin-bottom: 25px;
     border-radius: 8px;
-    border-left: 5px solid #d4e6f1;
+    border-left: 5px solid #44A1A4;
     padding-bottom: 10px;
 }
 
 section h2{
     color: #1a5276;
     margin-bottom: 2px;
-    border-bottom: 2px solid #d4e6f1;
+    border-bottom: 2px solid #44A1A4;
     padding-bottom: 10px;
 }
-
+section p{
+    color: #1a5276;
+}
 /*Aside Styles*/
 aside {
     background-color: #224248;
@@ -107,11 +109,11 @@ ul{
 
 ul li{
     margin: 8px 0;
-    color: #2c3e50;
+    color: #1a5276;
 }
 
 .highlight {
-    background-color: #e67e22;
+    background-color: #224248;
     font-weight: bold;
 }
 
@@ -127,10 +129,13 @@ ul li{
     color: #1a5276;
 }
 
+.project-item p {
+    color: #1a5276;
+}
 .button {
     display: inline-block;
     background-color: #44A1A4;
-    color: wheat;
+    color: #F0F9FA;
     padding: 0px 20px;
     text-decoration: none;
     border-radius: 5px;
