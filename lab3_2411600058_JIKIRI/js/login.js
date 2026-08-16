@@ -1,13 +1,13 @@
-/*document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
     const loginBtn = document.getElementById('loginBtn');
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
     const feedbackDiv = document.getElementById('loginFeedback');
-
-    if (localStorage.getItem('isLoggedIn') === 'true') {
-        window.location.href = 'dashboard.html';
-    }
-
+    /*
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            window.location.href = 'dashboard.html';
+        }
+    */
     loginBtn.addEventListener('click', function () {
         const username = usernameInput.value.trim();
         const password = passwordInput.value.trim();
@@ -20,7 +20,7 @@
         }
 
         const validUsername = 'admin';
-        const validPassword = 'password13';
+        const validPassword = 'password123';
 
         if (username === validUsername && password === validPassword) {
             localStorage.setItem('isLoggedIn', 'true');
@@ -51,11 +51,10 @@
             loginBtn.click();
         }
     });
-    
+
     passwordInput.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
             loginBtn.click();
         }
     });
 });
-*/
