@@ -40,10 +40,10 @@ function updateGreeting(username) {
 
 function updateStatistics() {
     const stats = [
-        { title: 'Total Users', value: '2,150', color: 'text-primary', icon: '📦' },
-        { title: 'Revenue', value: '$45,150', color: 'text-success', icon: '💰' },
-        { title: 'New Customers', value: '342', color: 'text-info', icon: '👥' },
-        { title: 'Return Rate', value: '2.40%', color: 'text-warning', icon: '🔄' }
+        { title: "Today's Orders", value: '32', color: 'text-primary', icon: '🍽' },
+        { title: "Today's Revenue", value: '$19,150', color: 'text-success', icon: '💰' },
+        { title: 'Reservation', value: '12', color: 'text-info', icon: '📅' },
+        { title: 'Available Tables', value: '8', color: 'text-warning', icon: '🪑' }
     ];
 
     const cardTitles = document.querySelectorAll('[id^="stat"][id$="-title"]');
@@ -69,12 +69,12 @@ function populateActivityTable() {
     if (!tableBody) return;
 
     const activities = [
-        { date: '2026-08-10 14:30', activity: 'New order received #ORD-4562', status: 'success' },
-        { date: '2026-08-10 13:15', activity: 'Customer support ticket resolved', status: 'info' },
-        { date: '2026-08-10 11:45', activity: 'Product inventory updated', status: 'warning' },
-        { date: '2026-08-10 09:00', activity: 'New Customer Signed Up', status: 'success' },
-        { date: '2026-08-09 16:20', activity: 'Payment received for invoice #INV-312', status: 'success' },
-        { date: '2026-08-09 14:10', activity: 'Shipping delay reported for oder #ORD-4521', status: 'danger' }
+        { date: '2026-08-10 14:30', activity: 'New reservation received for Table 8', status: 'success' },
+        { date: '2026-08-10 13:15', activity: 'Menu item "Beef Steak" updated', status: 'info' },
+        { date: '2026-08-10 11:45', activity: 'Low inventory alert: Chicken Breast', status: 'warning' },
+        { date: '2026-08-10 09:00', activity: 'New Customer Reservation Up', status: 'success' },
+        { date: '2026-08-09 16:20', activity: 'Inventory restocked: Soft Drinks', status: 'success' },
+        { date: '2026-08-09 14:10', activity: 'Table 5 reservation has been cancelled', status: 'danger' }
 
     ];
 
