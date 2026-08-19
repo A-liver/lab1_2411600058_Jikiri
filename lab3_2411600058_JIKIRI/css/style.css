@@ -24,7 +24,7 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Login Page */
+/* Login Page 
 .login-page {
   background:linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
   min-height: 100vh;/
@@ -41,7 +41,7 @@ body {
   background: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
   border-bottom: none;
 }
-
+*/
 /* Sidebar */
 .sidebar {
   background-color: #ffffff;
@@ -111,7 +111,7 @@ body {
 .border-accent {
   border-left: 4px solid var(--theme-accent);
 }
-
+/*
 .border-primary-custom {
   border-left: 4px solid var(--theme-primary);
 }
@@ -131,7 +131,7 @@ body {
 .text-primary-custom {
   color: var(--theme-primary);
 }
-
+*/
 .btn-primary {
   background-color: var(--theme-primary);
   border-color: var(--theme-primary);

@@ -45,10 +45,10 @@ function updateStatistics() {
         { title: 'Reservation', value: '12', color: 'text-info', icon: '📅' },
         { title: 'Available Tables', value: '8', color: 'text-warning', icon: '🪑' }
     ];
-
+    /*
     const cardTitles = document.querySelectorAll('[id^="stat"][id$="-title"]');
     const cardValues = document.querySelectorAll('[id^="stat"][id$="-value"]');
-
+    */
     stats.forEach((stat, index) => {
         const titleElement = document.getElementById(`stat${index + 1}-title`);
         const valueElement = document.getElementById(`stat${index + 1}-value`);

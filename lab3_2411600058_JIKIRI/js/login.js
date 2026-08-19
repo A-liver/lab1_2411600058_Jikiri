@@ -3,11 +3,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
     const feedbackDiv = document.getElementById('loginFeedback');
-    /*
-        if (localStorage.getItem('isLoggedIn') === 'true') {
-            window.location.href = 'dashboard.html';
-        }
-    */
+
+    // Remember Me
+    const rememberMe = document.getElementById("rememberMe");
+    const savedUsername = localStorage.getItem("rememberedUsername");
+
+    if (savedUsername) {
+        usernameInput.value = savedUsername;
+        rememberMe.checked = true;
+    }
+
     loginBtn.addEventListener('click', function () {
         const username = usernameInput.value.trim();
         const password = passwordInput.value.trim();
@@ -26,6 +31,13 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('user', username);
 
+            // Remember username
+            if (rememberMe.checked) {
+                localStorage.setItem("rememberedUsername", username);
+            } else {
+                localStorage.removeItem("rememberedUsername");
+            }
+
             showFeedback('Login successful! Redirecting...', 'success');
 
             setTimeout(function () {
@@ -36,8 +48,10 @@ document.addEventListener("DOMContentLoaded", function () {
             showFeedback('Invalid username or password. Please try again.', 'danger');
         }
     });
+
     function showFeedback(message, type) {
         const alertClass = type === 'danger' ? 'alert-danger' : 'alert-success';
+
         feedbackDiv.innerHTML = `
         <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
             ${message}
