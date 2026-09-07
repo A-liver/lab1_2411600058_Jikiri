@@ -60,7 +60,8 @@
             <!--Main Content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
                 <!-- Content goes here-->
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom" >
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
                     <h2 id="greeting">Good Morning, User!</h2>
                 </div>
                 <div class="row mb-4">
@@ -97,6 +98,248 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="mb-0">
+                        <i class="bi bi-box-seam me-2"></i>
+                        Inventory Management
+                    </h3>
+                </div>
+
+
+                <div id="inventoryContent">
+                    <div id="lowStockAlert"></div>
+                    <div class="row mb-4">
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="card stat-card shadow-hover text-center">
+                                <div class="card-body py-3">
+                                    <h6 class="card-title text-muted mb-1">
+                                        Total Products
+                                    </h6>
+                                    <h4 class="fw-bold text-primary mb-0" id="invTotalProducts">
+                                        0
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="card stat-card shadow-hover text-center">
+                                <div class="card-body py-3">
+                                    <h6 class="card-title text-muted mb-1">
+                                        Inventory Value
+                                    </h6>
+                                    <h4 class="fw-bold text-success mb-0" id="invTotalValue">
+                                        $0.00
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="card stat-card shadow-hover text-center">
+                                <div class="card-body py-3">
+                                    <h6 class="card-title text-muted mb-1">
+                                        Low Stock
+                                    </h6>
+                                    <h4 class="fw-bold text-warning mb-0" id="invLowStock">
+                                        0
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="card stat-card shadow-hover text-center">
+                                <div class="card-body py-3">
+                                    <h6 class="card-title text-muted mb-1">
+                                        Out of Stock
+                                    </h6>
+                                    <h4 class="fw-bold text-danger mb-0" id="invOutOfStock">
+                                        0
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-lg-4 mb-3">
+                            <div class="card chart-card h-100">
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="categoryValueChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 mb-3">
+                            <div class="card chart-card h-100">
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="stockStatusChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 mb-3">
+                            <div class="card chart-card h-100">
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="topProductsChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="card filter-card mb-4">
+                        <div class="card-body">
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-3">
+                                    <label for="categoryFilter" class="form-label">
+                                        Category
+                                    </label>
+                                    <select id="categoryFilter" class="form-select">
+                                        <option value="all">
+                                            All Categories
+                                        </option>
+                                    </select>
+                                </div>
+
+
+
+                                <div class="col-md-3">
+                                    <label class="form-label d-block">
+                                        Stock Status
+                                    </label>
+                                    <div class="btn-group w-100" role="group" aria-label="Stock status filter">
+
+                                        <button type="button" class="btn btn-outline-secondary active"
+                                            data-stock-filter="all">
+                                            All
+                                        </button>
+
+                                        <button type="button" class="btn btn-outline-success"
+                                            data-stock-filter="in-stock">
+                                            In
+                                        </button>
+
+                                        <button type="button" class="btn btn-outline-warning"
+                                            data-stock-filter="low-stock">
+                                            Low
+                                        </button>
+
+                                        <button type="button" class="btn btn-outline-danger"
+                                            data-stock-filter="out-of-stock">
+                                            Out
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label for="minPriceFilter" class="form-label">
+                                        Min Price
+                                    </label>
+
+                                    <input type="number" min="0" step="0.01" class="form-control" id="minPriceFilter"
+                                        placeholder="0.00">
+                                </div>
+
+                                <div class="col-md-2">
+                                    <label for="maxPriceFilter" class="form-label">
+                                        Max Price
+                                    </label>
+
+                                    <input type="number" min="0" step="0.01" class="form-control" id="maxPriceFilter"
+                                        placeholder="0.00">
+                                </div>
+
+                                <div class="col-md-2 d-flex gap-2">
+                                    <button class="btn btn-primary flex-fill" id="applyFiltersBtn">
+                                        Apply
+                                    </button>
+
+                                    <button class="btn btn-outline-secondary flex-fill" id="resetFiltersBtn">
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                            <hr>
+
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-8">
+                                    <label for="productSearch" class="form-label">
+                                        Search by name or SKU
+                                    </label>
+
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-search"></i>
+                                        </span>
+
+                                        <input type="text" id="productSearch" class="form-control"
+                                            placeholder="e.g. Chicken, INV-005...">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 text-md-end">
+                                    <button class="btn btn-outline-primary" id="exportCsvBtn">
+                                        <i class="bi bi-download me-1"></i>
+                                        Export to CSV
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                Inventory Items
+                            </h5>
+                        </div>
+
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover align-middle">
+                                    <thead>
+                                        <tr class="border-accent">
+                                            <th>SKU</th>
+                                            <th>Product</th>
+                                            <th>Category</th>
+                                            <th>Qty</th>
+                                            <th>Unit Price</th>
+                                            <th>Total Value</th>
+                                            <th>Status</th>
+                                            <th>Supplier</th>
+                                            <th>Last Updated</th>
+                                        </tr>
+                                    </thead>
+
+
+                                    <tbody id="inventoryTableBody">
+                                        <!-- dashboard.js will insert products here -->
+                                    </tbody>
+                                </table>
+                                <p id="inventoryEmptyState" class="text-muted text-center py-3 d-none">
+                                    No products match the current filters/search.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0">Recent Activity</h5>
@@ -105,7 +348,7 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
                                 <thead>
-                                    <tr class ="border-accent">
+                                    <tr class="border-accent">
                                         <th>Date</th>
                                         <th>Activity</th>
                                         <th>Status</th>
@@ -124,6 +367,8 @@
 
     <!--Bootstrap 5 JS CDN-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <!--Chart.js CDN-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
     <!--Custom JavaScript-->
     <script src="js/dashboard.js"></script>
 </body>

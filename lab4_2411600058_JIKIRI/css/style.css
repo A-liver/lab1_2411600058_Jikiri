@@ -141,6 +141,11 @@ body {
   background-color: var(--theme-secondary);
   border-color: var(--theme-secondary);
 }
+
+.chart-container {
+    position: relative;
+    height: 300px;
+}
 @media (max-width: 768px) {
   .sidebar {
     min-height: auto !important;
@@ -180,3 +185,4 @@ body {
 #activityTableBody{
     color: var(--theme-secondary);
 }
+
