@@ -143,7 +143,7 @@ function renderInventoryDashboard() {
     const searchInput = document.getElementById('productSearch');
     renderInventoryTable(products, searchInput ? searchInput.value : '');
     renderLowStockAlerts();
-    renderCharts(); // defined in charts.js, pulls from DataManager itself
+    renderCharts(); 
     updateInventorySummary();
 }
 
@@ -384,3 +384,4 @@ function showToast(message) {
         setTimeout(() => toastEl.remove(), 5000);
     }
 }
+
