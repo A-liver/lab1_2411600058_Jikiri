@@ -46,5 +46,11 @@
                 </a>
             </div>
         @endif
+
+        <div class="text-center mt-3">
+            <span class="small text-muted">Don't have an account?</span>
+            <a class="small" href="{{ route('register') }}">Register</a>
+        </div>
+            
     </form>
 </x-guest-layout>
