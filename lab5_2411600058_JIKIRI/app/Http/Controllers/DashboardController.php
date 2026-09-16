@@ -45,18 +45,28 @@ class DashboardController extends Controller
             ->sortByDesc(fn ($p) => $p->quantity * $p->unit_price)
             ->take(10)
             ->values();
+            
+        $productsForCharts = Product::all()->map(fn ($p) => [
+            'name' => $p->name,
+            'category' => $p->category,
+            'quantity' => $p->quantity,
+            'unitPrice' => (float) $p->unit_price,
+            'reorderLevel' => $p->reorder_level,
+            ]);
 
         return view('dashboard.index', compact(
             'totalProducts',
             'lowStockCount',
             'outOfStockCount',
-            'inStockCount', // <-- added
+            'inStockCount', 
             'totalValue',
             'lowStockProducts',
             'outOfStockProducts',
             'recentProducts',
             'categoryBreakdown',
-            'topProducts'
+            'topProducts',
+            'productsForCharts' 
+
         ));
     }
 }

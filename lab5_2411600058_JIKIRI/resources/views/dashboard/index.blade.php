@@ -129,90 +129,45 @@
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
 <script>
-    const THEME_COLORS = ['#606C38', '#BC6C25', '#DDA15E', '#283618', '#8a9a5b', '#a3b18a', '#3a5a40'];
+    // Minimal shim: gives Lab 4's charts.js a DataManager to talk to,
+    // backed by real Laravel/MySQL data instead of products.json.
+    window.DataManager = (function () {
+        const products = @json($productsForCharts);
 
-    const categoryLabels = @json($categoryBreakdown->pluck('category'));
-    const categoryValues = @json($categoryBreakdown->map(fn ($category) => (float) $category->total_value));
-
-    new Chart(document.getElementById('categoryValueChart'), {
-        type: 'bar',
-        data: {
-            labels: categoryLabels,
-            datasets: [{
-                label: 'Inventory Value ($)',
-                data: categoryValues,
-                backgroundColor: THEME_COLORS
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { title: { display: true, text: 'Inventory Value by Category' } },
-            scales: { y: { beginAtZero: true } }
+        function getStockStatus(product) {
+            if (product.quantity <= 0) return 'out-of-stock';
+            if (product.quantity <= product.reorderLevel) return 'low-stock';
+            return 'in-stock';
         }
-    });
 
-    new Chart(document.getElementById('stockStatusChart'), {
-        type: 'doughnut',
-        data: {
-            labels: ['In Stock', 'Low Stock', 'Out of Stock'],
-            datasets: [{
-                data: [{{ $inStockCount }}, {{ $lowStockCount }}, {{ $outOfStockCount }}],
-                backgroundColor: ['#28a745', '#f3a712', '#dc3545']
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { title: { display: true, text: 'Stock Status Distribution' } }
+        function getProducts() {
+            return products;
         }
-    });
 
-    const topLabels = @json($topProducts->pluck('name'));
-    const topValues = @json($topProducts->map(fn ($p) => round($p->quantity * $p->unit_price, 2)));
-
-    new Chart(document.getElementById('topProductsChart'), {
-        type: 'bar',
-        data: {
-            labels: topLabels,
-            datasets: [{ label: 'Value ($)', data: topValues, backgroundColor: '#BC6C25' }]
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false }, title: { display: true, text: 'Top 10 Products by Value' } }
+        function getStockStatistics() {
+            const totalProducts = products.length;
+            const lowStockCount = products.filter(p => getStockStatus(p) === 'low-stock').length;
+            const outOfStockCount = products.filter(p => getStockStatus(p) === 'out-of-stock').length;
+            return { totalProducts, lowStockCount, outOfStockCount };
         }
-    });
-    
-    const username = @json(auth()->user()->name ?? 'User');
 
-    document.addEventListener('DOMContentLoaded', function () {
-        updateGreeting(username);
-    });
+        function getTopProductsByValue(n = 5) {
+            return [...products]
+                .sort((a, b) => b.quantity * b.unitPrice - a.quantity * a.unitPrice)
+                .slice(0, n);
+        }
 
-    function updateGreeting(username) {
-    const greetingElement = document.getElementById('greeting');
-    if (!greetingElement) return;
-
-    const hour = new Date().getHours();
-    let timeOfDay = '';
-
-    if (hour >= 5 && hour < 12) {
-        timeOfDay = 'Good Morning';
-    } else if (hour >= 12 && hour < 17) {
-        timeOfDay = 'Good Afternoon';
-    } else if (hour >= 17 && hour < 21) {
-        timeOfDay = 'Good Evening';
-    } else {
-        timeOfDay = 'Good Night';
-    }
-
-    greetingElement.textContent = `${timeOfDay}, ${username}!`;
-}
+        return { getProducts, getStockStatus, getStockStatistics, getTopProductsByValue };
+    })();
 </script>
 
+<script src="{{ asset('JavaScript/charts.js') }}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', renderCharts);
+</script>
 @endpush
 
 @endsection
