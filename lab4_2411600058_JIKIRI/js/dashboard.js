@@ -60,12 +60,7 @@ function updateGreeting(username) {
 }
 
 function updateStatistics() {
-    const stats = [
-        { title: "Today's Orders", value: '32', color: 'text-primary', icon: '🍽' },
-        { title: "Today's Revenue", value: '$19,150', color: 'text-success', icon: '💰' },
-        { title: 'Reservation', value: '12', color: 'text-info', icon: '📅' },
-        { title: 'Available Tables', value: '8', color: 'text-warning', icon: '🪑' }
-    ];
+    const stats = [];
 
     stats.forEach((stat, index) => {
         const titleElement = document.getElementById(`stat${index + 1}-title`);
