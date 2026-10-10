@@ -1,4 +1,3 @@
-
 let simulationIntervalId = null;
 
 document.addEventListener('DOMContentLoaded', async function () {
@@ -16,8 +15,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         userNameSpan.textContent = username;
     }
 
-    updateStatistics();
-    populateActivityTable();
     setupLogout();
 
     showInventoryLoading(true);
@@ -31,13 +28,14 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
     showInventoryLoading(false);
 
+    DataManager.recordValueSnapshot();
+
     renderInventoryDashboard();
     setupFilterControls();
     setupSearch();
     setupExport();
     startRealTimeSimulation();
 });
-
 
 function updateGreeting(username) {
     const greetingElement = document.getElementById('greeting');
@@ -46,7 +44,7 @@ function updateGreeting(username) {
     const hour = new Date().getHours();
     let timeOfDay = '';
 
-    if (hour >= 5 && hour < 12) {
+    if (hour >= 1 && hour < 12) {
         timeOfDay = 'Good Morning';
     } else if (hour >= 12 && hour < 17) {
         timeOfDay = 'Good Afternoon';
@@ -57,57 +55,6 @@ function updateGreeting(username) {
     }
 
     greetingElement.textContent = `${timeOfDay}, ${username}!`;
-}
-
-function updateStatistics() {
-    const stats = [];
-
-    stats.forEach((stat, index) => {
-        const titleElement = document.getElementById(`stat${index + 1}-title`);
-        const valueElement = document.getElementById(`stat${index + 1}-value`);
-
-        if (titleElement) {
-            titleElement.textContent = `${stat.icon} ${stat.title}`;
-        }
-        if (valueElement) {
-            valueElement.textContent = stat.value;
-            valueElement.className = `card-text fw-bold ${stat.color}`;
-        }
-    });
-}
-
-function populateActivityTable() {
-    const tableBody = document.getElementById('activityTableBody');
-    if (!tableBody) return;
-
-    const activities = [
-        { date: '2026-08-10 14:30', activity: 'New reservation received for Table 8', status: 'success' },
-        { date: '2026-08-10 13:15', activity: 'Menu item "Beef Steak" updated', status: 'info' },
-        { date: '2026-08-10 11:45', activity: 'Low inventory alert: Chicken Breast', status: 'warning' },
-        { date: '2026-08-10 09:00', activity: 'New Customer Reservation Up', status: 'success' },
-        { date: '2026-08-09 16:20', activity: 'Inventory restocked: Soft Drinks', status: 'success' },
-        { date: '2026-08-09 14:10', activity: 'Table 5 reservation has been cancelled', status: 'danger' }
-    ];
-
-    tableBody.innerHTML = '';
-
-    activities.forEach((activity) => {
-        const row = document.createElement('tr');
-
-        let badgeClass = 'bg-secondary';
-        if (activity.status === 'success') badgeClass = 'bg-success';
-        else if (activity.status === 'warning') badgeClass = 'bg-warning text-dark';
-        else if (activity.status === 'danger') badgeClass = 'bg-danger';
-        else if (activity.status === 'info') badgeClass = 'bg-info text-dark';
-
-        row.innerHTML = `
-            <td>${activity.date}</td>
-            <td>${activity.activity}</td>
-            <td><span class="badge ${badgeClass}">${activity.status}</span></td>
-        `;
-
-        tableBody.appendChild(row);
-    });
 }
 
 function setupLogout() {
@@ -138,15 +85,16 @@ function renderInventoryDashboard() {
     const searchInput = document.getElementById('productSearch');
     renderInventoryTable(products, searchInput ? searchInput.value : '');
     renderLowStockAlerts();
-    renderCharts(); 
-    updateInventorySummary();
+    renderCharts(products);
+    updateInventorySummary(products);
 }
 
 function refreshInventoryView() {
     const products = DataManager.applyFilters();
     const searchInput = document.getElementById('productSearch');
     renderInventoryTable(products, searchInput ? searchInput.value : '');
-    updateInventorySummary();
+    renderCharts(products);
+    updateInventorySummary(products);
 }
 
 function renderInventoryTable(products, query = '') {
@@ -205,6 +153,7 @@ function highlightMatch(text, query) {
     if (!query || !query.trim()) return escaped;
 
     const escapedQuery = query.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
     const regex = new RegExp(`(${escapedQuery})`, 'ig');
     return escaped.replace(regex, '<mark>$1</mark>');
 }
@@ -241,8 +190,8 @@ function renderLowStockAlerts() {
     `;
 }
 
-function updateInventorySummary() {
-    const stats = DataManager.getStockStatistics();
+function updateInventorySummary(products) {
+    const stats = DataManager.getStockStatistics(products);
     const setText = (id, text) => {
         const el = document.getElementById(id);
         if (el) el.textContent = text;
@@ -250,9 +199,10 @@ function updateInventorySummary() {
     setText('invTotalProducts', stats.totalProducts);
     setText('invTotalValue', `$${stats.totalValue.toFixed(2)}`);
     setText('invLowStock', stats.lowStockCount);
-    setText('invOutOfStock', stats.outOfStockCount);
+    const healthy = stats.totalProducts - stats.lowStockCount - stats.outOfStockCount;
+    const healthPct = stats.totalProducts ? Math.round((healthy / stats.totalProducts) * 100) : 0;
+    setText('invStockHealth', `${healthPct}%`);
 }
-
 
 function setupFilterControls() {
     const categorySelect = document.getElementById('categoryFilter');
@@ -334,7 +284,6 @@ function setupExport() {
     });
 }
 
-
 function startRealTimeSimulation() {
     if (simulationIntervalId) clearInterval(simulationIntervalId);
 
@@ -345,10 +294,11 @@ function startRealTimeSimulation() {
         const direction = change.delta >= 0 ? '+' : '';
         showToast(`${change.product.name}: ${direction}${change.delta} units → now ${change.product.quantity}`);
 
+        DataManager.recordValueSnapshot();
+
         renderInventoryDashboard();
     }, DataManager.CONFIG.simulationIntervalMs);
 }
-
 
 function showToast(message) {
     let container = document.getElementById('toastContainer');
@@ -379,4 +329,3 @@ function showToast(message) {
         setTimeout(() => toastEl.remove(), 5000);
     }
 }
-

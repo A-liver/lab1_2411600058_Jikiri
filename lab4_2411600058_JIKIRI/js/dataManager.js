@@ -4,8 +4,9 @@ const DataManager = (function () {
     const CONFIG = {
         apiEndpoint: 'api/products.php',
         localDataFile: 'json/products.json',
-        simulationIntervalMs: 8000,
+        simulationIntervalMs: 10000,
     };
+
     const state = {
         products: [],
         activeFilters: {
@@ -14,7 +15,8 @@ const DataManager = (function () {
             minPrice: null,
             maxPrice: null
         },
-        searchQuery: ''
+        searchQuery: '',
+        valueHistory: []
     };
 
     async function initializeData() {
@@ -71,11 +73,11 @@ const DataManager = (function () {
         return state.products.filter((p) => getStockStatus(p) !== 'in-stock');
     }
 
-    function getStockStatistics() {
-        const totalProducts = state.products.length;
-        const totalValue = state.products.reduce((sum, p) => sum + p.quantity * p.unitPrice, 0);
-        const lowStockCount = state.products.filter((p) => getStockStatus(p) === 'low-stock').length;
-        const outOfStockCount = state.products.filter((p) => getStockStatus(p) === 'out-of-stock').length;
+    function getStockStatistics(list = state.products) {
+        const totalProducts = list.length;
+        const totalValue = list.reduce((sum, p) => sum + p.quantity * p.unitPrice, 0);
+        const lowStockCount = list.filter((p) => getStockStatus(p) === 'low-stock').length;
+        const outOfStockCount = list.filter((p) => getStockStatus(p) === 'out-of-stock').length;
         return { totalProducts, totalValue, lowStockCount, outOfStockCount };
     }
 
@@ -91,12 +93,47 @@ const DataManager = (function () {
         return Object.values(summary);
     }
 
-    function getTopProductsByValue(n = 5) {
-        return [...state.products]
+    function getTopProductsByValue(n = 5, list = state.products) {
+        return [...list]
             .sort((a, b) => b.quantity * b.unitPrice - a.quantity * a.unitPrice)
             .slice(0, n);
     }
 
+    function getCategoryHealth(list = state.products) {
+        const map = {};
+        list.forEach((p) => {
+            if (!map[p.category]) {
+                map[p.category] = { category: p.category, inStock: 0, lowStock: 0, outOfStock: 0, total: 0 };
+            }
+            const s = getStockStatus(p);
+            if (s === 'in-stock') map[p.category].inStock++;
+            else if (s === 'low-stock') map[p.category].lowStock++;
+            else map[p.category].outOfStock++;
+            map[p.category].total++;
+        });
+        return Object.values(map).sort((a, b) => a.category.localeCompare(b.category));
+    }
+
+    function getReorderItems(list = state.products) {
+        return list
+            .filter((p) => getStockStatus(p) !== 'in-stock')
+            .map((p) => ({
+                name: p.name,
+                quantity: p.quantity,
+                reorderLevel: p.reorderLevel,
+                shortfall: Math.max(0, p.reorderLevel - p.quantity)
+            }))
+            .sort((a, b) => b.shortfall - a.shortfall);
+    }
+
+    function recordValueSnapshot() {
+        state.valueHistory.push({ time: new Date().toLocaleTimeString(), value: getStockStatistics().totalValue });
+        if (state.valueHistory.length > 20) state.valueHistory.shift();
+    }
+
+    function getValueHistory() {
+        return state.valueHistory;
+    }
 
     function filterByCategory(category) {
         state.activeFilters.category = category;
@@ -145,7 +182,6 @@ const DataManager = (function () {
         return result;
     }
 
-
     function searchProducts(query) {
         const q = (query || '').toLowerCase().trim();
         if (!q) return state.products;
@@ -190,12 +226,11 @@ const DataManager = (function () {
         if (state.products.length === 0) return null;
         const index = Math.floor(Math.random() * state.products.length);
         const product = state.products[index];
-        const delta = Math.floor(Math.random() * 11) - 5; // -5..+5
+        const delta = Math.floor(Math.random() * 11) - 5;
         product.quantity = Math.max(0, product.quantity + delta);
         product.lastUpdated = new Date().toISOString().slice(0, 10);
         return { product, delta };
     }
-
 
     return {
         CONFIG,
@@ -208,6 +243,10 @@ const DataManager = (function () {
         getStockStatistics,
         getCategorySummary,
         getTopProductsByValue,
+        getCategoryHealth,
+        getReorderItems,
+        recordValueSnapshot,
+        getValueHistory,
         filterByCategory,
         filterByStockStatus,
         filterByPriceRange,

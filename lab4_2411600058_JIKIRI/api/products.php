@@ -1,27 +1,23 @@
 <?php
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+/*if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
+*/
 
-$dataFile = __DIR__ . '/products_data.json';
+$dataFile = __DIR__ . '/../json/products.json';
 
 function loadProducts($dataFile) {
-    if (file_exists($dataFile)) {
+    if (is_file($dataFile) && is_readable($dataFile)) {
         $json = file_get_contents($dataFile);
         $data = json_decode($json, true);
         if (is_array($data)) return $data;
     }
-    return defaultProducts();
-}
 
-function saveProducts($dataFile, $products) {
-    file_put_contents($dataFile, json_encode($products, JSON_PRETTY_PRINT));
+    return defaultProducts();
 }
 
 function defaultProducts() {
@@ -73,6 +69,10 @@ if ($method === 'GET') {
     }
     exit();
 }
+/*
+function saveProducts($dataFile, $products) {
+    file_put_contents($dataFile, json_encode($products, JSON_PRETTY_PRINT));
+}
 
 if ($method === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
@@ -106,6 +106,6 @@ if ($method === 'POST') {
     echo json_encode(['success' => true]);
     exit();
 }
-
+*/
 http_response_code(405);
 echo json_encode(['error' => 'Method not allowed']);
